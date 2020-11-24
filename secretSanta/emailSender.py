@@ -62,12 +62,3 @@ for name, email in zip(names, emails):
 
 if __name__ == '__main__':
     main()
-
-# message = "TEST MESSAGE"
-#
-# server = smtplib.SMTP_SSL("smtp.gmail.com", 587)
-# server.login("example@gmail.com", "passwd")
-# server.sendmail("example@gmail.com",
-#                 "contact@mail.xD",
-#                 message)
-# server.quit()
