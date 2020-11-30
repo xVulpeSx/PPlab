@@ -66,7 +66,7 @@ int main(){
     wypiszTabliceJednowymiarowa(10, tablica);
 
     ///// sizeof
-    printf("\nrozmiar: %d", sizeof(tablica));  // rozmiar inta ( bo wskaznik na int)
+    printf("\nrozmiar: %d", sizeof(tablica));  // NIGDY TAK NIE ROBIMY BO SIE PIERDOLI
 
 
     return 0;
