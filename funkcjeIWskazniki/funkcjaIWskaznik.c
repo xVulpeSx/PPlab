@@ -37,7 +37,7 @@ void wypiszTabliceJednowymiarowa(int n, int *tab){
 }
 
 int *tablicaJednowymiarowa(int n, int a){
-    int *tab = malloc(sizeof(int)*n);
+    int *tab = malloc(sizeof(int)*n);       // deklarujemy wskaznik a nastepnie 'rezerwujemy' dla niego n miejsc o rozmiarze int
 
     tab[0] = a;
 
