@@ -1,9 +1,13 @@
 #include<stdio.h>
 #include<stdlib.h>
 
-unsigned long long int schodek(int n, int r){
-    unsigned long long int *schodki = malloc(sizeof(unsigned long long int)*n);
+long long schodek(int n, int r){
+    long long  *schodki = (long long *) malloc(sizeof(long long)*n);
     schodki[0] = 1;
+
+    for(int i=1;i<n;i++){
+        schodki[i]=0;
+    }
 
     for(int i = 1; i < n; i++){
         for(int j=1;j<=r;j++){
@@ -15,7 +19,7 @@ unsigned long long int schodek(int n, int r){
         }
     }
 
-    unsigned long long int result = schodki[n-1];
+    long long result = schodki[n-1];
     free(schodki);
 
     return result;
@@ -27,7 +31,7 @@ int main(){
    scanf("%d", &n);
    scanf("%d", &r);
 
-   printf("%llu", schodek(n,r));
+   printf("%lld", schodek(n,r));
 
  //   printf("%d %d: %lld\n", 9, 9, schodek(9,9));
 
