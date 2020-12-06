@@ -1,11 +1,11 @@
 input.txt format:  
-Name Surname - anything that u want to be here  
+NameSurname - anything that u want to be here without spacebar
 email - correct email to person above this line  
   
 example:  
   
-John Doe  
+JohnDoe  
 John.Doe@example.email  
-Jan Kowalsky  
+JanKowalsky  
 jan.kowalsky@email.com  
 ...
