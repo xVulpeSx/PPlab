@@ -83,9 +83,9 @@ int main(){
     string line;
 
     ofstream writeFile;
-    ifstream readFile("PATH FOR INPUT FILE");
+    ifstream readFile("input.txt");
 
-    writeFile.open("PATH FOR OUTPUT FILE");
+    writeFile.open("output.txt");
 
     while (getline(readFile, line)){
         principal.name = line;
@@ -106,12 +106,16 @@ int main(){
         cout << "out!\n";
     }while(!missionAccomplished(santaOrder));
 
-    cout << "JAKI MAIL --> JAKA WIADOMOSC DOSTAJE" << endl;
+    cout << "OSOBA KTOREJ SIE ROBI --> MAIL OSOBY KTORA ROBI --> IMIE OSOBY KTORA ROBI" << endl;
 
-    for(int i = 0 ; i < santaOrder.size(); i++){
-        writeFile << santaOrder[i].santa.email << " --> " << santaOrder[i].reciver.name << endl;
-        cout << santaOrder[i].santa.email << " --> " << santaOrder[i].reciver.name << endl;
+    for(int i = 0 ; i < santaOrder.size()-1; i++){
+        writeFile << santaOrder[i].reciver.name << " " << santaOrder[i].santa.email << " " << santaOrder[i].santa.name << endl;
+        cout << santaOrder[i].reciver.name << " " << santaOrder[i].santa.email << " " << santaOrder[i].santa.name << endl;
     }
+
+    int i = santaOrder.size()-1;
+    writeFile << santaOrder[i].reciver.name << " " << santaOrder[i].santa.email << " " << santaOrder[i].santa.name;
+    cout << santaOrder[i].reciver.name << " " << santaOrder[i].santa.email << " " << santaOrder[i].santa.name;
 
     readFile.close();
     writeFile.close();
