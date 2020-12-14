@@ -37,6 +37,8 @@ int dx[] = {1, -1, 0, 0};   //przesuwanie sie po tablicy przy bfs
 int dy[] = {0, 0, -1, 1};
 char output[] = {'D', 'G', 'L', 'P'};
 
+struct Wsp goal;
+
 void myBfs(struct Sahara ** pustynia){
     struct Wsp curr, pom;
     // printf("bfs front: %d, rear: %d\n", front, rear);
@@ -51,6 +53,9 @@ void myBfs(struct Sahara ** pustynia){
                 pustynia[curr.x+dx[i]][curr.y+dy[i]].queued = true;
                 pom.x = curr.x + dx[i];
                 pom.y = curr.y + dy[i];
+                if(pom.x == goal.x && pom.y == goal.y){ //skoncz jesli znajdziesz wartosci dla celu
+                    return;
+                }
                 pushBack(pom);
             }
         }
@@ -102,6 +107,8 @@ void task(int n, int m){
             }else{
                 koniec.x = i;
                 koniec.y = j;
+                goal.x = i;
+                goal.y = j;
                 pustynia[i][j].value = INF;
                 pustynia[i][j].source = -1;
                 pustynia[i][j].queued = false;
@@ -113,6 +120,7 @@ void task(int n, int m){
    
     pushBack(start);
     myBfs(pustynia);
+
     // printf("poDickStra\n");
 
 
@@ -148,6 +156,7 @@ int main() {
     scanf("%d", &n);
 
     for(int i = 0; i < n; i++){
+        front = rear = -1;
         scanf("%d %d", &x, &y);
         task(x, y);
     }
