@@ -1,9 +1,8 @@
-// Queue implementation in C - https://www.programiz.com/dsa/queue
+// Queue implementation in C - http://www.cprogrammingnotes.com/question/dynamic-queue.html
 #include <stdio.h>
 #include<stdlib.h>
 
-#define SIZE INF
-#define INF 500000
+#define INF 555557
 
 #define dol 0
 #define gora 1
@@ -23,13 +22,20 @@ struct Sahara{
     int queued;
 };
 
+////////
+struct node
+{
+    struct Wsp data;
+    struct node *next;
+};
+
+struct node *front = NULL;
+struct node *rear = NULL;
+
+void display();
 void pushBack(struct Wsp);
 void popFront();
-void display();
-//queue
-struct Wsp bfsQueue[SIZE];
-int front = -1, rear = -1;
-
+///////
 int rx[] = {-1, 1, 0, 0};   //przesuwanie sie po tablicy przy wracaniu
 int ry[] = {0, 0, 1, -1};
 
@@ -41,13 +47,14 @@ struct Wsp goal;
 
 void myBfs(struct Sahara ** pustynia){
     struct Wsp curr, pom;
-    // printf("bfs front: %d, rear: %d\n", front, rear);
-    while(front != -1){
-        curr = bfsQueue[front];
-        popFront();
+
+    while(front != NULL){
+        curr.x = front->data.x;
+        curr.y = front->data.y;
         for(int i = 0; i < 4; i++){
-            // printf("bfs: i: %d, x: %d, y: %d, if: %d\n", i, curr.x+dx[i], curr.y+dy[i], curr.y+dy[i], pustynia[curr.x+dx[i]][curr.y+dy[i]].queued);
+            printf("bfs: i: %d, x: %d, y: %d, if: %d\n", i, curr.x+dx[i], curr.y+dy[i], pustynia[curr.x+dx[i]][curr.y+dy[i]].queued);
             if(pustynia[curr.x+dx[i]][curr.y+dy[i]].queued == false){
+                printf("im in! i: %d, queued: %d", i, pustynia[curr.x+dx[i]][curr.y+dy[i]].queued);
                 pustynia[curr.x+dx[i]][curr.y+dy[i]].value = pustynia[curr.x][curr.y].value + 1;
                 pustynia[curr.x+dx[i]][curr.y+dy[i]].source = i;
                 pustynia[curr.x+dx[i]][curr.y+dy[i]].queued = true;
@@ -56,31 +63,39 @@ void myBfs(struct Sahara ** pustynia){
                 if(pom.x == goal.x && pom.y == goal.y){ //skoncz jesli znajdziesz wartosci dla celu
                     return;
                 }
+                display();
                 pushBack(pom);
+                display();
             }
         }
+        popFront();
     }
 }
 
 void task(int n, int m){
-    // printf("task: %d %d\n",n, m);
+    printf("task: %d %d\n",n, m);
     ///////////////////////dane////////////////////////
-    struct Sahara ** pustynia = malloc((n + 2)*sizeof(struct Sahara));
+    struct Sahara ** pustynia = malloc((n+2)*sizeof(struct Sahara));
     for(int i = 0; i < n+2; i++){
         pustynia[i] = malloc((m+2)*sizeof(struct Sahara));
     }
     // otoczenie scianami
-    for(int i=1; i < n+1;i++){
+    for(int i=0; i < n+2;i++){
+        // printf("zerowane: %d %d, %d %d\n", i, 0, i, m+1);
         pustynia[i][0].value = -1;
         pustynia[i][m+1].value = -1;
         pustynia[i][0].queued = true;
         pustynia[i][m+1].queued = true;
+        // printf("\tzerowane: %d %d, %d %d\n", pustynia[i][0].value, pustynia[i][m+1].value, pustynia[i][0].queued, pustynia[i][m+1].queued);
+
     }
-    for(int i=0;i < m+1;i++){
+    for(int i=0; i < m+2;i++){
+        // printf("zerowane: %d %d, %d %d\n", 0, i, n+1, i);
         pustynia[0][i].value = -1;
         pustynia[n+1][i].value = -1;
         pustynia[0][i].queued = true;
         pustynia[n+1][i].queued = true;
+        // printf("\tzerowane: %d %d, %d %d\n", pustynia[0][i].value, pustynia[n+1][i].value, pustynia[0][i].queued, pustynia[n+1][i].queued);
     }
     
     char pom;
@@ -116,18 +131,20 @@ void task(int n, int m){
         }
     }
     ///////////////////////////////////////////////////
-    // printf("poWczytaniu: startx: %d starty: %d celx: %d cely: %d\n", start.x, start.y, koniec.x, koniec.y);
-   
+    printf("poWczytaniu: startx: %d starty: %d celx: %d cely: %d\n", start.x, start.y, goal.x, goal.y);
+    display();
     pushBack(start);
+    display();
     myBfs(pustynia);
 
     // printf("poDickStra\n");
 
+    char* result;
 
-    char result[INF];
     if(pustynia[koniec.x][koniec.y].value == INF){
         printf("BRAK\n");
     }else{
+        result = malloc((pustynia[koniec.x][koniec.y].value+1)*sizeof(char));
         int i = 0, source;
         while(pustynia[koniec.x][koniec.y].value != 0){
             source = pustynia[koniec.x][koniec.y].source;
@@ -144,7 +161,7 @@ void task(int n, int m){
     }
 
     ///////////////////////////////////////
-
+    free(result);
     for(int i = 0; i < n; i++){
         free(pustynia[i]);
     }
@@ -156,7 +173,7 @@ int main() {
     scanf("%d", &n);
 
     for(int i = 0; i < n; i++){
-        front = rear = -1;
+        front = rear = NULL;
         scanf("%d %d", &x, &y);
         task(x, y);
     }
@@ -164,38 +181,49 @@ int main() {
   return 0;
 }
 
-void pushBack(struct Wsp value) {
-  if (rear == SIZE - 1)
-    printf("\nQueue is Full!!");
-  else {
-    if (front == -1)
-      front = 0;
-    rear++;
-    bfsQueue[rear] = value;
-    //printf("\nInserted -> %d", value);
-  }
+void pushBack(struct Wsp item)
+{
+    struct node *nptr = malloc(sizeof(struct node));
+    nptr->data.x = item.x;
+    nptr->data.y = item.y;
+    nptr->next = NULL;
+    if (rear == NULL)
+    {
+        front = nptr;
+        rear = nptr;
+    }
+    else
+    {
+        rear->next = nptr;
+        rear = rear->next;
+    }
 }
 
-void popFront() {
-  if (front == -1)
-    printf("\nQueue is Empty!!");
-  else {
-    //printf("\nDeleted : %d", items[front]);
-    front++;
-    if (front > rear)
-      front = rear = -1;
-  }
+void display()
+{
+    struct node *temp;
+    temp = front;
+    printf("\n");
+    while (temp != NULL)
+    {
+        printf("%d %d, ", temp->data.x, temp->data.y);
+        temp = temp->next;
+    }
+    printf("\n");
 }
 
-// Function to print the queue
-void display() {
-  if (rear == -1)
-    printf("\nQueue is Empty!!!");
-  else {
-    int i;
-    printf("\nQueue elements are:\n");
-    for (i = front; i <= rear; i++)
-      printf("%d  %d, ", bfsQueue[i].x, bfsQueue[i].y);
-  }
-  printf("\n");
+void popFront()
+{
+    if (front == NULL)
+    {
+        printf("\n\nqueue is empty \n");
+    }
+    else
+    {
+        struct node *temp;
+        temp = front;
+        front = front->next;
+        // printf("\n\n%d deleted", temp->data);
+        free(temp);
+    }
 }
